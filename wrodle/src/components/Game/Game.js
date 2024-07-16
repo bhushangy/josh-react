@@ -12,7 +12,6 @@ import LostBanner from '../LostBanner/LostBanner';
 
 function Game() {
   const [answer, setAnswer] = React.useState(() => sample(WORDS));
-  console.log(answer);
   const [guessList, setGuessList] = React.useState([]);
   const [gameState, setGameState] = React.useState('running'); // Use enums like this instead of an object with boolean values tracking game state.
 
