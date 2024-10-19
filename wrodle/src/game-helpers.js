@@ -24,7 +24,7 @@ export function checkGuess(guess, answer) {
         letter: guessChars[i],
         status: 'correct',
       };
-      answerChars[i] = SOLVED_CHAR;
+      // answerChars[i] = SOLVED_CHAR;
       guessChars[i] = SOLVED_CHAR;
     }
   }
@@ -42,7 +42,7 @@ export function checkGuess(guess, answer) {
     );
     if (misplacedIndex >= 0) {
       status = 'misplaced';
-      answerChars[misplacedIndex] = SOLVED_CHAR;
+      // answerChars[misplacedIndex] = SOLVED_CHAR;
     }
 
     result[i] = {
