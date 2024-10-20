@@ -1,19 +1,17 @@
 import React from "react";
 
 import Button from "../Button";
-import Toast from "../Toast";
 import ToastShelf from "../ToastShelf";
+import { ToastContext } from "../ToastProvider";
 
 import styles from "./ToastPlayground.module.css";
-
-import { getToastIcon } from "../ToastPlayground/helpers";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 function ToastPlayground() {
   const [toastMessage, setToastMesasge] = React.useState("");
   const [toastVariant, setToastVariant] = React.useState("notice");
-  const [toastArray, setToastArray] = React.useState([]);
+  const { toastArray, addToast } = React.useContext(ToastContext);
 
   const toastMessageChangeHandler = (e) => {
     setToastMesasge(e.target.value);
@@ -23,29 +21,11 @@ function ToastPlayground() {
     setToastVariant(e.target.value);
   };
 
-  const toastCloseButtonClickHandler = React.useCallback(
-    (toastKey) => {
-      const filteredToastArray = toastArray.filter(
-        (toast) => toast.key !== toastKey
-      );
-      setToastArray(filteredToastArray);
-    },
-    [toastArray, setToastArray]
-  );
-
   const onFormSubmitHandler = (e) => {
     e.preventDefault();
     if (!e.target["toast-message-textarea"].value.toString().trim()) return;
 
-    setToastArray((prevValue) => [
-      ...prevValue,
-      {
-        icon: getToastIcon(toastVariant),
-        variant: toastVariant,
-        message: toastMessage,
-        key: crypto.randomUUID(),
-      },
-    ]);
+    addToast(toastMessage, toastVariant);
 
     setToastMesasge("");
     setToastVariant("notice");
@@ -58,12 +38,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {toastArray.length > 0 && (
-        <ToastShelf
-          toasts={toastArray}
-          toastCloseButtonClickHandler={toastCloseButtonClickHandler}
-        />
-      )}
+      {toastArray.length > 0 && <ToastShelf />}
 
       <form onSubmit={onFormSubmitHandler}>
         <div className={styles.controlsWrapper}>
