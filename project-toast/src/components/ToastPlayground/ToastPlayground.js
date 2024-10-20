@@ -2,6 +2,7 @@ import React from "react";
 
 import Button from "../Button";
 import Toast from "../Toast";
+import ToastShelf from "../ToastShelf";
 
 import styles from "./ToastPlayground.module.css";
 
@@ -12,9 +13,7 @@ const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 function ToastPlayground() {
   const [toastMessage, setToastMesasge] = React.useState("");
   const [toastVariant, setToastVariant] = React.useState("notice");
-  const [showToast, setShowToast] = React.useState(false);
-
-  const toastIcon = getToastIcon(toastVariant);
+  const [toastArray, setToastArray] = React.useState([]);
 
   const toastMessageChangeHandler = (e) => {
     setToastMesasge(e.target.value);
@@ -24,13 +23,32 @@ function ToastPlayground() {
     setToastVariant(e.target.value);
   };
 
-  const toastCloseButtonClickHandler = React.useCallback(() => {
-    setShowToast(false);
-  }, [setShowToast]);
+  const toastCloseButtonClickHandler = React.useCallback(
+    (toastKey) => {
+      const filteredToastArray = toastArray.filter(
+        (toast) => toast.key !== toastKey
+      );
+      setToastArray(filteredToastArray);
+    },
+    [toastArray, setToastArray]
+  );
 
   const onFormSubmitHandler = (e) => {
     e.preventDefault();
-    setShowToast(true);
+    if (!e.target["toast-message-textarea"].value.toString().trim()) return;
+
+    setToastArray((prevValue) => [
+      ...prevValue,
+      {
+        icon: getToastIcon(toastVariant),
+        variant: toastVariant,
+        message: toastMessage,
+        key: crypto.randomUUID(),
+      },
+    ]);
+
+    setToastMesasge("");
+    setToastVariant("notice");
   };
 
   return (
@@ -40,14 +58,11 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {showToast && (
-        <Toast
-          icon={toastIcon}
-          variant={toastVariant}
-          closeButtonClickHandler={toastCloseButtonClickHandler}
-        >
-          {toastMessage}
-        </Toast>
+      {toastArray.length > 0 && (
+        <ToastShelf
+          toasts={toastArray}
+          toastCloseButtonClickHandler={toastCloseButtonClickHandler}
+        />
       )}
 
       <form onSubmit={onFormSubmitHandler}>
@@ -62,10 +77,12 @@ function ToastPlayground() {
             </label>
             <div className={styles.inputWrapper}>
               <textarea
+                name="toast-message-textarea"
                 id="message"
                 className={styles.messageInput}
                 value={toastMessage}
                 onChange={toastMessageChangeHandler}
+                required
               />
             </div>
           </div>
