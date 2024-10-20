@@ -1,14 +1,20 @@
 import React from "react";
 
 import Button from "../Button";
+import Toast from "../Toast";
 
 import styles from "./ToastPlayground.module.css";
+
+import { getToastIcon } from "../ToastPlayground/helpers";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 function ToastPlayground() {
   const [toastMessage, setToastMesasge] = React.useState("");
   const [toastVariant, setToastVariant] = React.useState("notice");
+  const [showToast, setShowToast] = React.useState(false);
+
+  const toastIcon = getToastIcon(toastVariant);
 
   const toastMessageChangeHandler = (e) => {
     setToastMesasge(e.target.value);
@@ -18,8 +24,13 @@ function ToastPlayground() {
     setToastVariant(e.target.value);
   };
 
+  const toastCloseButtonClickHandler = React.useCallback(() => {
+    setShowToast(false);
+  }, [setShowToast]);
+
   const onFormSubmitHandler = (e) => {
     e.preventDefault();
+    setShowToast(true);
   };
 
   return (
@@ -28,6 +39,16 @@ function ToastPlayground() {
         <img alt="Cute toast mascot" src="/toast.png" />
         <h1>Toast Playground</h1>
       </header>
+
+      {showToast && (
+        <Toast
+          icon={toastIcon}
+          variant={toastVariant}
+          closeButtonClickHandler={toastCloseButtonClickHandler}
+        >
+          {toastMessage}
+        </Toast>
+      )}
 
       <form onSubmit={onFormSubmitHandler}>
         <div className={styles.controlsWrapper}>
