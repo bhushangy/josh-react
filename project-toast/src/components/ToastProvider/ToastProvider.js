@@ -30,8 +30,10 @@ function ToastProvider({ children }) {
     ]);
   }, []);
 
+  const removeAllToasts = () => setToastArray([]);
+
   const value = React.useMemo(
-    () => ({ toastArray, addToast, removeToast }),
+    () => ({ toastArray, addToast, removeToast, removeAllToasts }),
     [toastArray, addToast, removeToast]
   );
 
