@@ -3,6 +3,7 @@ import React from "react";
 import Button from "../Button";
 import ToastShelf from "../ToastShelf";
 import { ToastContext } from "../ToastProvider";
+import ToastBackgroundImage from "../../../assets/toast.png";
 
 import styles from "./ToastPlayground.module.css";
 
@@ -34,7 +35,7 @@ function ToastPlayground() {
   return (
     <div className={styles.wrapper}>
       <header>
-        <img alt="Cute toast mascot" src="toast.png" />
+        <img alt="Cute toast mascot" src={ToastBackgroundImage} />
         <h1>Toast Playground</h1>
       </header>
 
