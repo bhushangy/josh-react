@@ -1,6 +1,7 @@
 import React from "react";
 
 import { getToastIcon } from "../ToastPlayground/helpers";
+import useEscapeKey from "../../hooks/useEscapeKey";
 
 export const ToastContext = React.createContext();
 
@@ -31,6 +32,8 @@ function ToastProvider({ children }) {
   }, []);
 
   const removeAllToasts = () => setToastArray([]);
+
+  useEscapeKey(removeAllToasts);
 
   const value = React.useMemo(
     () => ({ toastArray, addToast, removeToast, removeAllToasts }),
