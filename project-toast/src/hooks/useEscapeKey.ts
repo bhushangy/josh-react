@@ -14,7 +14,7 @@ const useEscapeKey = (callBackFn) => {
     document.addEventListener("keydown", escKeyPressHandler);
 
     return () => document.removeEventListener("keydown", escKeyPressHandler);
-  }, []);
+  }, [callBackFn]);
 };
 
 export default useEscapeKey;

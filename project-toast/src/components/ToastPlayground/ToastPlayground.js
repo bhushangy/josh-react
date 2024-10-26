@@ -10,7 +10,7 @@ const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 function ToastPlayground() {
   const [toastMessage, setToastMesasge] = React.useState("");
-  const [toastVariant, setToastVariant] = React.useState("notice");
+  const [toastVariant, setToastVariant] = React.useState(VARIANT_OPTIONS[0]);
   const { toastArray, addToast } = React.useContext(ToastContext);
 
   const toastMessageChangeHandler = (e) => {
@@ -28,7 +28,7 @@ function ToastPlayground() {
     addToast(toastMessage, toastVariant);
 
     setToastMesasge("");
-    setToastVariant("notice");
+    setToastVariant(VARIANT_OPTIONS[0]);
   };
 
   return (
